@@ -286,7 +286,7 @@ const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 c.clearRect(0, 0, canvas.width, canvas.height);      //Clears the canvas for new graph
 c.fillStyle = "#000000";
-c.fillRect(0, 0, canvas.width, canvas.height);
+c.fillRect(0, 0, canvas.width, canvas.height); 
 // canvas.width = innerWidth;
 // canvas.height = innerHeight;
 var h = canvas.height;

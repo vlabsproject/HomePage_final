@@ -15,7 +15,7 @@ messAmpInput.addEventListener("input", (event) => {
     valueOne.textContent = event.target.value;
   messageAmp1 = event.target.value;
   messageSignal();
-  amModulation();
+  fmModulation();
   modulationValueUpdate();
   
 })
@@ -28,9 +28,9 @@ messFreqInput.addEventListener("input", (event) => {
   messageFreq = event.target.value;
 //   messageFreq = messageFreq *0.1;
   messageSignal();
-  amModulation();
+  fmModulation();
 
-})
+});
 
 function messageSignal(){
     const message = document.getElementById('amMessage');
@@ -59,7 +59,7 @@ carrAmpInput.addEventListener("input", (event) => {
     valueThree.textContent = event.target.value;
     carrierAmp1 = event.target.value;
     carrierSignal();
-    amModulation();
+    fmModulation();
     modulationValueUpdate();
 });
 
@@ -70,7 +70,7 @@ carrFreqOutput.addEventListener("input", (event) => {
     valueFour.textContent = event.target.value;
     carrierFreq = event.target.value;
     carrierSignal();
-    amModulation();
+    fmModulation();
 });
 
 
@@ -96,24 +96,24 @@ function carrierSignal(){
         }
 
 
-// --------------------------------------------------------------- Amplitude Modulation ---------------------------------------------------------
+// --------------------------------------------------------------- Frequency Modulation ---------------------------------------------------------
 
-function amModulation(){
-        const modulated = document.getElementById('amModulated');
-        const as =modulated.getContext('2d');
-        as.beginPath();
-        as.clearRect(0,0,modulated.width,modulated.height);
-        as.fillStyle = "#000000";
-        as.fillRect(0, 0, modulated.width, modulated.height);
-        as.moveTo(0,modulated.height/2);
-        for (let i = 0; i <modulated.width; i++) {
-            am_Y = modulated.height/2 + ((carrierAmp1 * 10) /2 - (messageAmp1 * 10 )/2*Math.cos(2 * Math.PI * ( messageFreq * 0.01 )*i))*Math.cos(2 * Math.PI * carrierFreq*i*0.01);
-            as.lineTo(i,am_Y);  
-        }
-        as.lineTo(modulated.width,modulated.height/2);
-        as.strokeStyle = "yellow";
-        as.stroke();
-    }
+function fmModulation(){
+  const modulated = document.getElementById('fmModulated');
+  const fs =modulated.getContext('2d');
+  fs.beginPath();
+  fs.clearRect(0,0,modulated.width,modulated.height);
+  fs.fillStyle = "#000000";
+  fs.fillRect(0, 0, modulated.width, modulated.height);
+  fs.moveTo(0,modulated.height/2);
+  for (let i = 0; i <modulated.width; i++) {
+      fm_Y = modulated.height/2 + (carrierAmp1 * 10 * Math.cos((2*Math.PI*carrierFreq*i*0.01) - 20*Math.sin(2*Math.PI*messageFreq*i*0.01)));
+      fs.lineTo(i,fm_Y);  
+  }
+  fs.lineTo(modulated.width,modulated.height/2);
+  fs.strokeStyle = "yellow";
+  fs.stroke();
+}
 function modulationValueUpdate(){
         if(messageAmp1-carrierAmp1 < 0){
             modulationCondition.innerHTML = "Result:- Under Modulation";
@@ -131,4 +131,4 @@ function modulationValueUpdate(){
 
 messageSignal();
 carrierSignal();
-amModulation();
+fmModulation();
